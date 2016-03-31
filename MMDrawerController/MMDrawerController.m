@@ -327,8 +327,17 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 
 -(void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
     NSParameterAssert(drawerSide != MMDrawerSideNone);
-    
-    [self openDrawerSide:drawerSide animated:animated velocity:self.animationVelocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
+    if (drawerSide == MMDrawerSideLeft && self.shouldNotOpenLeftDrawer) {
+        if (completion) {
+            completion(NO);
+        }
+    } else if (drawerSide == MMDrawerSideRight && self.shouldNotOpenRightDrawer) {
+        if (completion) {
+            completion(NO);
+        }
+    } else {
+        [self openDrawerSide:drawerSide animated:animated velocity:self.animationVelocity animationOptions:UIViewAnimationOptionCurveEaseInOut completion:completion];
+    }
 }
 
 -(void)openDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated velocity:(CGFloat)velocity animationOptions:(UIViewAnimationOptions)options completion:(void (^)(BOOL finished))completion{
@@ -1073,10 +1082,16 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
             MMDrawerSide visibleSide = MMDrawerSideNone;
             CGFloat percentVisible = 0.0;
             if(xOffset > 0){
+                if (self.shouldNotOpenLeftDrawer) {
+                    return;
+                }
                 visibleSide = MMDrawerSideLeft;
                 percentVisible = xOffset/self.maximumLeftDrawerWidth;
             }
             else if(xOffset < 0){
+                if (self.shouldNotOpenRightDrawer) {
+                    return;
+                }
                 visibleSide = MMDrawerSideRight;
                 percentVisible = ABS(xOffset)/self.maximumRightDrawerWidth;
             }

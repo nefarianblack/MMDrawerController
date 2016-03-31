@@ -166,6 +166,12 @@ typedef void (^MMDrawerControllerDrawerVisualStateBlock)(MMDrawerController * dr
 @property (nonatomic, assign) BOOL shouldStretchDrawer;
 
 /**
+ This disables left/right drawer view controller to be shown. This can be set for a particular view controller which needs this kind of functionality.
+*/
+@property (nonatomic, assign) BOOL shouldNotOpenLeftDrawer;
+@property (nonatomic, assign) BOOL shouldNotOpenRightDrawer;
+
+/**
  The current open side of the drawer. 
  
  Note this value will change as soon as a pan gesture opens a drawer, or when a open/close animation is finished.

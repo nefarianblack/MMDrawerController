@@ -250,6 +250,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
     NSParameterAssert(drawerSide!=MMDrawerSideNone);
     [self.view endEditing];
     if(self.openSide == MMDrawerSideNone){
+        [self.view endEditing: YES];
         [self openDrawerSide:drawerSide animated:animated completion:completion];
     }
     else {
@@ -257,6 +258,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
            self.openSide == MMDrawerSideLeft) ||
            (drawerSide == MMDrawerSideRight &&
            self.openSide == MMDrawerSideRight)){
+            [self.view endEditing: YES];
             [self closeDrawerAnimated:animated completion:completion];
         }
         else if(completion){
@@ -1074,6 +1076,8 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
         }
         case UIGestureRecognizerStateChanged:{
             self.view.userInteractionEnabled = NO;
+            [self.view endEditing: YES];
+            
             CGRect newFrame = self.startingPanRect;
             CGPoint translatedPoint = [panGesture translationInView:self.centerContainerView];
             newFrame.origin.x = [self roundedOriginXForDrawerConstriants:CGRectGetMinX(self.startingPanRect)+translatedPoint.x];

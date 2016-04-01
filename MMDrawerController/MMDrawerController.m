@@ -248,6 +248,7 @@ static NSString *MMDrawerOpenSideKey = @"MMDrawerOpenSide";
 #pragma mark - Open/Close methods
 -(void)toggleDrawerSide:(MMDrawerSide)drawerSide animated:(BOOL)animated completion:(void (^)(BOOL finished))completion{
     NSParameterAssert(drawerSide!=MMDrawerSideNone);
+    [self.view endEditing];
     if(self.openSide == MMDrawerSideNone){
         [self openDrawerSide:drawerSide animated:animated completion:completion];
     }
